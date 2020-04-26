@@ -1,3 +1,4 @@
 *.pyc
 LICENSE
 README.md
+*.log
