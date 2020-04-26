@@ -3,6 +3,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.action_chains import ActionChains
 import traceback
+import log
 
 page = {
 	"name"         : "home",
@@ -18,6 +19,7 @@ page = {
 username_menu_xpath = "//img[@class='account-avatar']//following-sibling::span[@class='account-name']"
 logout_button_xpath = "//li[@class='account-dropdown-item']//descendant::span[text()='Logout']"
 login_title_xpath = "//div[@class='signin-title' and contains(text(), 'Shopee Seller Centre')]"
+home_log = log.get_logger(logger_name="lib.shopee.web.page.home", logging_level="info")
 
 #################################################
 #                 Navigations                   #
@@ -31,8 +33,10 @@ def logout(webdriver, waiting_time=30):
 		logout_button = wait_event.until(ec.element_to_be_clickable((By.XPATH, logout_button_xpath)))
 		logout_button.click()
 		wait_event.until(ec.visibility_of_element_located((By.XPATH, login_title_xpath)))
+		home_log.info("Successfully logout")
 		return True
 
 	except:
+		home_log.error("Failed to logout")
 		print(traceback.format_exc())
 		return False
