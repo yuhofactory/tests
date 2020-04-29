@@ -6,9 +6,9 @@ import log
 
 page = {
 	"name"         : "login",
-	"title"        : "Login",
+	"title"        : "Shopee Seller Centre",
 	"parent"       : None,
-	"path"         : "login",
+	"url"         : "account/signin",
 	"active_xpath" : None,
 	"link_xpath"   : None,
 	"ident_xpath"  : "//div[@class='signin-title' and contains(text(), 'Shopee Seller Centre')]",

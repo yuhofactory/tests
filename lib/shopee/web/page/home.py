@@ -7,9 +7,9 @@ import log
 
 page = {
 	"name"         : "home",
-	"title"        : "Home",
+	"title"        : "Shopee Seller Centre",
 	"parent"       : None,
-	"path"         : "home",
+	"url"          : None,
 	"active_xpath" : None,
 	"link_xpath"   : None,
 	"ident_xpath"  : "//a[@href='/portal/settings/account']//descendant::span[text()='Account']",
