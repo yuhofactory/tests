@@ -2,6 +2,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 import log
+import traceback
 import shopee.config as config
 import shopee.web.page.home as home
 import shopee.web.page.myproducts as myproducts
@@ -57,4 +58,4 @@ def navigate(webdriver, page, use_url=False, waiting_time=30):
 			element.click()
 			nav_log.info("Successfully navigated to {} page".format(page_nav["name"]))
 		except Exception as e:
-			nav_log.error(e)
+			nav_log.error(traceback.print_exc())
