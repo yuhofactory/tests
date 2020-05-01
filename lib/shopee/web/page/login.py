@@ -3,6 +3,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 import traceback
 import log
+import shopee.config as config
 
 page = {
 	"name"         : "login",
@@ -15,7 +16,8 @@ page = {
 	"ident_id"     : None,
 }
 
-login_log = log.get_logger(logger_name="lib.shopee.web.page.login", logging_level="info")
+conf = config.get_config()
+login_log = log.get_logger(logger_name="lib.shopee.web.page.login", logging_level=conf.get("LOGGING", "LEVEL"))
 username_input_xpath = "//input[@class='shopee-input__input' and @placeholder='Email/Phone/Username']"
 password_input_xpath = "//input[@class='shopee-input__input' and @placeholder='Password']"
 login_button_xpath = "//button[descendant::span[text()='Log In']]"
