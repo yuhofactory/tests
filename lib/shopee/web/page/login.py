@@ -8,17 +8,17 @@ page = {
 	"name"         : "login",
 	"title"        : "Shopee Seller Centre",
 	"parent"       : None,
-	"url"         : "account/signin",
+	"url"          : "account/signin",
 	"active_xpath" : None,
 	"link_xpath"   : None,
 	"ident_xpath"  : "//div[@class='signin-title' and contains(text(), 'Shopee Seller Centre')]",
 	"ident_id"     : None,
 }
 
+login_log = log.get_logger(logger_name="lib.shopee.web.page.login", logging_level="info")
 username_input_xpath = "//input[@class='shopee-input__input' and @placeholder='Email/Phone/Username']"
 password_input_xpath = "//input[@class='shopee-input__input' and @placeholder='Password']"
 login_button_xpath = "//button[descendant::span[text()='Log In']]"
-login_log = log.get_logger(logger_name="lib.shopee.web.page.login", logging_level="info")
 
 #################################################
 #                 Navigations                   #

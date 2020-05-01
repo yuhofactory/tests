@@ -11,15 +11,15 @@ page = {
 	"parent"       : None,
 	"url"          : None,
 	"active_xpath" : None,
-	"link_xpath"   : None,
-	"ident_xpath"  : "//a[@href='/portal/settings/account']//descendant::span[text()='Account']",
+	"link_xpath"   : "//a[@href='/' and contains(@class, 'header-logo')]",
+	"ident_xpath"  : "//div[@class='title' and contains(text(), 'Penalty')]",
 	"ident_id"     : None,
 }
 
+home_log = log.get_logger(logger_name="lib.shopee.web.page.home", logging_level="info")
 username_menu_xpath = "//img[@class='account-avatar']//following-sibling::span[@class='account-name']"
 logout_button_xpath = "//li[@class='account-dropdown-item']//descendant::span[text()='Logout']"
 login_title_xpath = "//div[@class='signin-title' and contains(text(), 'Shopee Seller Centre')]"
-home_log = log.get_logger(logger_name="lib.shopee.web.page.home", logging_level="info")
 
 #################################################
 #                 Navigations                   #
