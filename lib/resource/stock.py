@@ -14,7 +14,7 @@ def get_stock_amount():
 			df_header = pandas.read_csv(stock_amount_file_path, nrows=1)
 			df_header_list = list(df_header.columns)
 			df_stock_amount = pandas.read_csv(stock_amount_file_path, \
-				names=df_header_list, usecols=df_header_list, skiprows=1)
+				names=df_header_list, usecols=df_header_list, skiprows=1, keep_default_na=False)
 			stock_amount_list = []
 
 			for i in df_stock_amount.index:
