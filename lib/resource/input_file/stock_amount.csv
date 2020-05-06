@@ -1,2 +1,4 @@
-ommohome_product,shopee_product,size,colour,previous_amount,current_amount
-Rice Canister 5kg,Rice Canister/Barrel Bekas Beras Tin Container 10kg 5kg,5kg,White,2,3
+ommohome_product,shopee_product,variation_type,variation_data,previous_amount,current_amount
+Face Mask,Face Mask 3 Ply Ready Stock Topeng Muka 50Pcs 10Pcs,Quantity,20pcs,25,20
+Rice Canister 5kg,Rice Canister/Barrel Bekas Beras Tin Container 10kg 5kg,Size|Colour,5kg|White,10,7
+Mia Silicone Utensil Set,Silicon Kitchen Utensils Set 12PCS Senduk Sudip Pink Black Mint Green,Colour,Mint Green,5,4
