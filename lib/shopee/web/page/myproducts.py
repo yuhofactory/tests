@@ -27,7 +27,7 @@ element_invisibility_script = "arguments[0].style.visibility='hidden'"
 input_filter_textfield_xpath = "//div[@class='filter-input']//descendant::input[@class='shopee-input__input' and @type='text']"
 search_button_xpath = "//span[text()='Search']//ancestor::button[contains(@class, 'shopee-button')]"
 edit_button_xpath = "//div[@class='product-action']//child::button"
-variation_information_xpath = "//div[@class='edit-label edit-title' and contains(text(), 'Variation Information')]"
+variation_information_label_xpath = "//div[@class='edit-label edit-title' and contains(text(), 'Variation Information')]"
 variation_table_column_names_xpath = "//div[contains(text(), 'Variation List')]\
     //following-sibling::div//descendant::div[@class='table-header']//descendant::div[@class='table-cell']"
 column_data_input_xpath = "//div[contains(text(), 'Variation List')]//following-sibling::div\
@@ -38,6 +38,12 @@ variation_column_data_xpath = "//div[contains(text(), 'Variation List')]\
     //following-sibling::div//descendant::div[@class='table-body']//descendant::div[@class='table-cell readonly']"
 variation_column_header_xpath = "//div[contains(text(), 'Variation List')]\
     //following-sibling::div//descendant::div[@class='table-header']//descendant::div[@class='table-cell readonly']"
+sales_information_label_xpath = "//h2[contains(text(), 'Sales Information')]"
+stock_amount_textfield_xpath = "//h2[contains(text(), 'Sales Information')]//following-sibling::div\
+	//descendant::input[@class='shopee-input__input' and ancestor::div[@class='grid edit-row']\
+	//descendant::span[contains(text(), 'Stock')]]"
+update_button_xpath = "//span[contains(text(), 'Update')]//parent::button[contains(@class, 'shopee-button')]"
+successful_product_update_notification_xpath = "//div[@class='shopee-toasts']"
 
 OMMOHOME_PRODUCT_INDEX = 0
 SHOPEE_PRODUCT_INDEX = 1
@@ -115,9 +121,9 @@ def insert_stock_amount(webdriver, stock_amount, waiting_time=30):
 
 		# For product with variation
 		if stock_amount[VARIATION_TYPE_INDEX].upper() != "N/A" and stock_amount[VARIATION_DATA_INDEX].upper() != "N/A":
-			variation_information = wait_event.until(ec.visibility_of_element_located(\
-				(By.XPATH, variation_information_xpath)))
-			variation_information.location_once_scrolled_into_view
+			variation_information_label = wait_event.until(ec.visibility_of_element_located(\
+				(By.XPATH, variation_information_label_xpath)))
+			variation_information_label.location_once_scrolled_into_view
 
 			variation_table_column_names = wait_event.until(ec.visibility_of_all_elements_located(\
 				(By.XPATH, variation_table_column_names_xpath)))
@@ -179,6 +185,38 @@ def insert_stock_amount(webdriver, stock_amount, waiting_time=30):
 				else:
 					row += 1
 
+		# For product without variation
+		else:
+			sales_information_label = wait_event.until(ec.visibility_of_element_located(\
+				(By.XPATH, sales_information_label_xpath)))
+			sales_information_label.location_once_scrolled_into_view
+
+			stock_amount_textfield = wait_event.until(ec.visibility_of_element_located(\
+				(By.XPATH, stock_amount_textfield_xpath)))
+			stock_amount_textfield.clear()
+			stock_amount_textfield.send_keys(stock_amount[CURRENT_AMOUNT_INDEX])
+			myproducts_log.debug("Successfully inserted new stock amount")
+
+	except Exception as e:
+		myproducts_log.error(traceback.print_exc())
+
+def click_update_button(webdriver, waiting_time=30):
+	try:
+		wait_event = WebDriverWait(webdriver, waiting_time)
+		update_button = wait_event.until(ec.element_to_be_clickable((By.XPATH, update_button_xpath)))
+		update_button.click()
+		myproducts_log.debug("Successfully clicked update button in product details page")
+
+	except Exception as e:
+		myproducts_log.error(traceback.print_exc())
+
+def wait_for_successful_update_notification(webdriver, waiting_time=30):
+	try:
+		wait_event = WebDriverWait(webdriver, waiting_time)
+		successful_product_update_notification = wait_event.until(ec.visibility_of_element_located(\
+			(By.XPATH, successful_product_update_notification_xpath)))
+		myproducts_log.debug("Successfully displayed product update notification")
+
 	except Exception as e:
 		myproducts_log.error(traceback.print_exc())
 
@@ -187,6 +225,8 @@ def update_stock_amount(webdriver, stock_amount, waiting_time=30):
 		time.sleep(3)
 		click_edit_button(webdriver, waiting_time)
 		insert_stock_amount(webdriver, stock_amount, waiting_time)
+		click_update_button(webdriver, waiting_time)
+		wait_for_successful_update_notification(webdriver, waiting_time)
 		myproducts_log.info("Successfully updated stock amount for product {} from {} unit to {} unit".\
 			format(stock_amount[SHOPEE_PRODUCT_INDEX], stock_amount[PREVIOUS_AMOUNT_INDEX], \
 				stock_amount[CURRENT_AMOUNT_INDEX]))
