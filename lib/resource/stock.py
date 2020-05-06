@@ -20,16 +20,16 @@ def get_stock_amount():
 			for i in df_stock_amount.index:
 				ommohome_product = str(df_stock_amount.loc[i, 'ommohome_product'])
 				shopee_product = str(df_stock_amount.loc[i, 'shopee_product'])
-				size = str(df_stock_amount.loc[i, 'size'])
-				colour = str(df_stock_amount.loc[i, 'colour'])
+				variation_type = str(df_stock_amount.loc[i, 'variation_type'])
+				variation_data = str(df_stock_amount.loc[i, 'variation_data'])
 				previous_amount = str(df_stock_amount.loc[i, 'previous_amount'])
 				current_amount = str(df_stock_amount.loc[i, 'current_amount'])
 
 				stock_amount_list.append([
 					ommohome_product, 
 					shopee_product, 
-					size, 
-					colour, 
+					variation_type, 
+					variation_data, 
 					previous_amount,
 					current_amount
 				])
