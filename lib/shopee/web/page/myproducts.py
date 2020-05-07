@@ -145,33 +145,58 @@ def insert_stock_amount(webdriver, stock_amount, waiting_time=30):
 			variation_column_header = wait_event.until(ec.visibility_of_all_elements_located(\
 				(By.XPATH, variation_column_header_xpath)))
 
-			no_of_variation = len(variation_column_header)
-			stock_row_index = 0
-
 			myproducts_log.debug("No of column data input (editable & non-editable) : {}".format(\
 				len(column_data_input)))
 			myproducts_log.debug("No of variation column data : {}".format(len(variation_column_data)))
 			myproducts_log.debug("No of variation column header : {}".format(len(variation_column_header)))
 
-			# Check for correct variation combination in the table based on input file
-			for i in range(0, len(variation_column_data), no_of_variation):
-				is_product_variation = True
+			stock_row_index = 0
+			node_index = 0
+			
+			# Check for correct variation combination based on condition of parent node attribute
+			while node_index < len(variation_column_data):
+				is_product_variation = False
+				is_found_stock_row_index = False
+				variation_column_data_parent_attribute = get_parent_node_attribute(variation_column_data, node_index)
 
-				for j in range(i, i+no_of_variation, 1):
-					myproducts_log.debug("Searching for non-existence of {} in {} : {}".format(\
-						variation_column_data[j].text, \
-						stock_amount[VARIATION_DATA_INDEX].split("|"), \
-						variation_column_data[j].text not in stock_amount[VARIATION_DATA_INDEX].split("|")))
+				# Check for parent node attribute in the first variation column
+				while "table-row" in variation_column_data_parent_attribute:
+					if variation_column_data[node_index].text in stock_amount[VARIATION_DATA_INDEX].split("|"):
+						is_product_variation = True
 
-					if variation_column_data[j].text not in stock_amount[VARIATION_DATA_INDEX].split("|"):
-						is_product_variation = False
+					node_index += 1
+					stock_row_index += 1
+
+					if node_index < len(variation_column_data):
+						variation_column_data_parent_attribute = get_parent_node_attribute(variation_column_data, node_index)
+
+					# Check for existence of second variation column
+					if "table-cells" in variation_column_data_parent_attribute:
+						stock_row_index -= 1
 						break
 
-				if is_product_variation:
-					break
-				else:
+					# Determine the index of stock amount row for variation with one column
+					elif is_product_variation:
+						stock_row_index -= 1
+						is_found_stock_row_index = True
+						break
+
+				# Check for parent node attribute in the second variation column (if any)
+				while "table-cells" in variation_column_data_parent_attribute:
+					# Determine the index of stock amount row for variation with two columns
+					if is_product_variation and variation_column_data[node_index].text in stock_amount[VARIATION_DATA_INDEX].split("|"):
+						is_found_stock_row_index = True
+						break
+
+					node_index += 1
 					stock_row_index += 1
-			
+
+					if node_index < len(variation_column_data):
+						variation_column_data_parent_attribute = get_parent_node_attribute(variation_column_data, node_index)
+
+				if is_found_stock_row_index:
+					break
+
 			myproducts_log.debug("Correct variation combination is at row index {}".format(stock_row_index))
 			row = 0
 
@@ -199,6 +224,12 @@ def insert_stock_amount(webdriver, stock_amount, waiting_time=30):
 
 	except Exception as e:
 		myproducts_log.error(traceback.print_exc())
+
+def get_parent_node_attribute(variation_column_data, node_index):
+	variation_column_data_parent = variation_column_data[node_index].find_element_by_xpath("..")
+	variation_column_data_parent_attribute = variation_column_data_parent.get_attribute("class")
+
+	return variation_column_data_parent_attribute
 
 def click_update_button(webdriver, waiting_time=30):
 	try:
