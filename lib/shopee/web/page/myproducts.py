@@ -115,14 +115,15 @@ def click_edit_button(webdriver, waiting_time=30):
 	except Exception as e:
 		myproducts_log.error(traceback.print_exc())
 
-def insert_stock_amount(webdriver, stock_amount, waiting_time=30):
+def insert_stock_amount(webdriver, stock_amount_2Dlist, waiting_time=30):
 	try:
 		wait_event = WebDriverWait(webdriver, waiting_time)
 
-		# For product with variation
-		if stock_amount[VARIATION_TYPE_INDEX].upper() != "N/A" and stock_amount[VARIATION_DATA_INDEX].upper() != "N/A":
+		# Retrieve all required web elements (for product with variation)
+		if stock_amount_2Dlist[0][VARIATION_TYPE_INDEX].upper() != "N/A" and \
+			stock_amount_2Dlist[0][VARIATION_DATA_INDEX].upper() != "N/A":
 			variation_information_label = wait_event.until(ec.visibility_of_element_located(\
-				(By.XPATH, variation_information_label_xpath)))
+					(By.XPATH, variation_information_label_xpath)))
 			variation_information_label.location_once_scrolled_into_view
 
 			variation_table_column_names = wait_event.until(ec.visibility_of_all_elements_located(\
@@ -150,77 +151,81 @@ def insert_stock_amount(webdriver, stock_amount, waiting_time=30):
 			myproducts_log.debug("No of variation column data : {}".format(len(variation_column_data)))
 			myproducts_log.debug("No of variation column header : {}".format(len(variation_column_header)))
 
-			stock_row_index = 0
-			node_index = 0
-			
-			# Check for correct variation combination based on condition of parent node attribute
-			while node_index < len(variation_column_data):
-				is_product_variation = False
-				is_found_stock_row_index = False
-				variation_column_data_parent_attribute = get_parent_node_attribute(variation_column_data, node_index)
+		# Update stock amount for all variations of the same product
+		for stock_amount in stock_amount_2Dlist:
+			# For product with variation
+			if stock_amount[VARIATION_TYPE_INDEX].upper() != "N/A" and stock_amount[VARIATION_DATA_INDEX].upper() != "N/A":
+				stock_row_index = 0
+				node_index = 0
+				
+				# Check for correct variation combination based on condition of parent node attribute
+				while node_index < len(variation_column_data):
+					is_product_variation = False
+					is_found_stock_row_index = False
+					variation_column_data_parent_attribute = get_parent_node_attribute(variation_column_data, node_index)
 
-				# Check for parent node attribute in the first variation column
-				while "table-row" in variation_column_data_parent_attribute:
-					if variation_column_data[node_index].text in stock_amount[VARIATION_DATA_INDEX].split("|"):
-						is_product_variation = True
+					# Check for parent node attribute in the first variation column
+					while "table-row" in variation_column_data_parent_attribute:
+						if variation_column_data[node_index].text in stock_amount[VARIATION_DATA_INDEX].split("|"):
+							is_product_variation = True
 
-					node_index += 1
-					stock_row_index += 1
+						node_index += 1
+						stock_row_index += 1
 
-					if node_index < len(variation_column_data):
-						variation_column_data_parent_attribute = get_parent_node_attribute(variation_column_data, node_index)
+						if node_index < len(variation_column_data):
+							variation_column_data_parent_attribute = get_parent_node_attribute(variation_column_data, node_index)
 
-					# Check for existence of second variation column
-					if "table-cells" in variation_column_data_parent_attribute:
-						stock_row_index -= 1
+						# Check for existence of second variation column
+						if "table-cells" in variation_column_data_parent_attribute:
+							stock_row_index -= 1
+							break
+
+						# Determine the index of stock amount row for variation with one column
+						elif is_product_variation:
+							stock_row_index -= 1
+							is_found_stock_row_index = True
+							break
+
+					# Check for parent node attribute in the second variation column (if any)
+					while "table-cells" in variation_column_data_parent_attribute:
+						# Determine the index of stock amount row for variation with two columns
+						if is_product_variation and variation_column_data[node_index].text in stock_amount[VARIATION_DATA_INDEX].split("|"):
+							is_found_stock_row_index = True
+							break
+
+						node_index += 1
+						stock_row_index += 1
+
+						if node_index < len(variation_column_data):
+							variation_column_data_parent_attribute = get_parent_node_attribute(variation_column_data, node_index)
+
+					if is_found_stock_row_index:
 						break
 
-					# Determine the index of stock amount row for variation with one column
-					elif is_product_variation:
-						stock_row_index -= 1
-						is_found_stock_row_index = True
+				myproducts_log.debug("Correct variation combination is at row index {}".format(stock_row_index))
+				row = 0
+
+				# Update stock amount based on its variation combination
+				for i in range(STOCK_COLUMN_INDEX, len(column_data_input), len(variation_table_column_names)):
+					if row == stock_row_index:
+						column_data_input[i].clear()
+						column_data_input[i].send_keys(stock_amount[CURRENT_AMOUNT_INDEX])
+						myproducts_log.debug("Successfully inserted new stock amount")
 						break
+					else:
+						row += 1
 
-				# Check for parent node attribute in the second variation column (if any)
-				while "table-cells" in variation_column_data_parent_attribute:
-					# Determine the index of stock amount row for variation with two columns
-					if is_product_variation and variation_column_data[node_index].text in stock_amount[VARIATION_DATA_INDEX].split("|"):
-						is_found_stock_row_index = True
-						break
+			# For product without variation
+			else:
+				sales_information_label = wait_event.until(ec.visibility_of_element_located(\
+					(By.XPATH, sales_information_label_xpath)))
+				sales_information_label.location_once_scrolled_into_view
 
-					node_index += 1
-					stock_row_index += 1
-
-					if node_index < len(variation_column_data):
-						variation_column_data_parent_attribute = get_parent_node_attribute(variation_column_data, node_index)
-
-				if is_found_stock_row_index:
-					break
-
-			myproducts_log.debug("Correct variation combination is at row index {}".format(stock_row_index))
-			row = 0
-
-			# Update stock amount based on its variation combination
-			for i in range(STOCK_COLUMN_INDEX, len(column_data_input), len(variation_table_column_names)):
-				if row == stock_row_index:
-					column_data_input[i].clear()
-					column_data_input[i].send_keys(stock_amount[CURRENT_AMOUNT_INDEX])
-					myproducts_log.debug("Successfully inserted new stock amount")
-					break
-				else:
-					row += 1
-
-		# For product without variation
-		else:
-			sales_information_label = wait_event.until(ec.visibility_of_element_located(\
-				(By.XPATH, sales_information_label_xpath)))
-			sales_information_label.location_once_scrolled_into_view
-
-			stock_amount_textfield = wait_event.until(ec.visibility_of_element_located(\
-				(By.XPATH, stock_amount_textfield_xpath)))
-			stock_amount_textfield.clear()
-			stock_amount_textfield.send_keys(stock_amount[CURRENT_AMOUNT_INDEX])
-			myproducts_log.debug("Successfully inserted new stock amount")
+				stock_amount_textfield = wait_event.until(ec.visibility_of_element_located(\
+					(By.XPATH, stock_amount_textfield_xpath)))
+				stock_amount_textfield.clear()
+				stock_amount_textfield.send_keys(stock_amount[CURRENT_AMOUNT_INDEX])
+				myproducts_log.debug("Successfully inserted new stock amount")
 
 	except Exception as e:
 		myproducts_log.error(traceback.print_exc())
@@ -251,16 +256,15 @@ def wait_for_successful_update_notification(webdriver, waiting_time=30):
 	except Exception as e:
 		myproducts_log.error(traceback.print_exc())
 
-def update_stock_amount(webdriver, stock_amount, waiting_time=30):
+def update_stock_amount(webdriver, stock_amount_2Dlist, waiting_time=30):
 	try:
 		time.sleep(3)
 		click_edit_button(webdriver, waiting_time)
-		insert_stock_amount(webdriver, stock_amount, waiting_time)
+		insert_stock_amount(webdriver, stock_amount_2Dlist, waiting_time)
 		click_update_button(webdriver, waiting_time)
 		wait_for_successful_update_notification(webdriver, waiting_time)
-		myproducts_log.info("Successfully updated stock amount for product {} from {} unit to {} unit".\
-			format(stock_amount[SHOPEE_PRODUCT_INDEX], stock_amount[PREVIOUS_AMOUNT_INDEX], \
-				stock_amount[CURRENT_AMOUNT_INDEX]))
+		myproducts_log.info("Successfully updated stock amount for product {}".\
+			format(stock_amount_2Dlist[0][SHOPEE_PRODUCT_INDEX]))
 
 	except Exception as e:
 		myproducts_log.error(traceback.print_exc())

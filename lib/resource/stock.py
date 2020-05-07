@@ -15,7 +15,9 @@ def get_stock_amount():
 			df_header_list = list(df_header.columns)
 			df_stock_amount = pandas.read_csv(stock_amount_file_path, \
 				names=df_header_list, usecols=df_header_list, skiprows=1, keep_default_na=False)
-			stock_amount_list = []
+			stock_amount_2Dlist = []
+			stock_amount_3Dlist = []
+			product_name = str(df_stock_amount.loc[0, 'shopee_product'])
 
 			for i in df_stock_amount.index:
 				ommohome_product = str(df_stock_amount.loc[i, 'ommohome_product'])
@@ -25,15 +27,30 @@ def get_stock_amount():
 				previous_amount = str(df_stock_amount.loc[i, 'previous_amount'])
 				current_amount = str(df_stock_amount.loc[i, 'current_amount'])
 
-				stock_amount_list.append([
-					ommohome_product, 
-					shopee_product, 
-					variation_type, 
-					variation_data, 
-					previous_amount,
-					current_amount
-				])
+				if product_name == shopee_product:
+					stock_amount_2Dlist.append([
+						ommohome_product, 
+						shopee_product, 
+						variation_type, 
+						variation_data, 
+						previous_amount,
+						current_amount
+					])
+				else:
+					stock_amount_3Dlist.append(stock_amount_2Dlist)
+					stock_amount_2Dlist = []
+					stock_amount_2Dlist.append([
+						ommohome_product, 
+						shopee_product, 
+						variation_type, 
+						variation_data, 
+						previous_amount,
+						current_amount
+					])
+					product_name = shopee_product
 
+			# Append the last 2D list
+			stock_amount_3Dlist.append(stock_amount_2Dlist)
 			stock_log.info("Successfully retrieved stock amount")
 
 		except:
@@ -41,4 +58,4 @@ def get_stock_amount():
 	else:
 		stock_log.error("Invalid path for stock amount file : {}".format(stock_amount_file_path))
 
-	return stock_amount_list
+	return stock_amount_3Dlist
