@@ -4,6 +4,7 @@ from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.action_chains import ActionChains
 import traceback
 import log
+import time
 import ommohome.config as config
 
 page = {
@@ -23,6 +24,8 @@ username_menu_xpath = "//span[contains(text(), '{}')]//ancestor::li[contains(@cl
 	conf.get("LOGIN", "EMAIL_USERNAME"))
 logout_button_xpath = "//a[contains(text(), 'Logout') and ancestor::li[contains(@class, 'logined')]]"
 account_label_xpath = "//h1[contains(text(), 'My Account')]"
+search_textfield_xpath = "//input[@id='search-field-auto']"
+search_dropdown_xpath = "//span[@class='product-title' and contains(text(), '{}')]//parent::a"
 
 #################################################
 #                 Navigations                   #
@@ -44,5 +47,37 @@ def logout(webdriver, waiting_time=30):
 
 	except:
 		home_log.error("Failed to logout")
-		print(traceback.format_exc())
+		home_log.error(traceback.print_exc())
 		return False
+
+def insert_product_name(webdriver, product_name, waiting_time=30):
+	try:
+		wait_event = WebDriverWait(webdriver, waiting_time)
+		search_textfield = wait_event.until(ec.visibility_of_element_located((By.XPATH, search_textfield_xpath)))
+		search_textfield.clear()
+		search_textfield.send_keys(product_name)
+		home_log.debug("Successfully inserted product name")
+
+	except Exception as e:
+		home_log.error(traceback.print_exc())
+
+def click_product_name(webdriver, product_name, waiting_time=30):
+	try:
+		wait_event = WebDriverWait(webdriver, waiting_time)
+		search_dropdown = wait_event.until(ec.element_to_be_clickable((By.XPATH, search_dropdown_xpath.format(\
+			product_name))))
+		search_dropdown.click()
+		home_log.debug("Successfully clicked product name")
+
+	except Exception as e:
+		home_log.error(traceback.print_exc())
+
+def search_product(webdriver, product_name, waiting_time=30):
+	try:
+		time.sleep(5)
+		insert_product_name(webdriver, product_name, waiting_time)
+		click_product_name(webdriver, product_name, waiting_time)
+		home_log.info("Successfully searched product {}".format(product_name))
+
+	except Exception as e:
+		home_log.error(traceback.print_exc())
