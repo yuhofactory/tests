@@ -69,7 +69,7 @@ def get_stock_amount(product_index_name):
 							previous_amount,
 							current_amount
 						])
-						product_name = shopee_product_name
+						product_name = ommohome_product_name
 
 			# Append the last 2D list
 			stock_amount_3Dlist.append(stock_amount_2Dlist)
