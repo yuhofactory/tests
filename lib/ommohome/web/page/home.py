@@ -2,6 +2,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.keys import Keys
 import traceback
 import log
 import time
@@ -32,6 +33,8 @@ search_dropdown_xpath = "//span[@class='product-title' and contains(text(), '{}'
 #################################################
 def logout(webdriver, waiting_time=30):
 	try:
+		# Scroll to the top of page to ensure visibility of username menu
+		webdriver.find_element_by_tag_name("body").send_keys(Keys.CONTROL + Keys.HOME)
 		wait_event = WebDriverWait(webdriver, waiting_time)
 		action = ActionChains(webdriver)
 		username_menu = wait_event.until(ec.visibility_of_element_located((By.XPATH, username_menu_xpath)))
@@ -52,6 +55,8 @@ def logout(webdriver, waiting_time=30):
 
 def insert_product_name(webdriver, product_name, waiting_time=30):
 	try:
+		# Scroll to the top of page to ensure visibility of search textfield
+		webdriver.find_element_by_tag_name("body").send_keys(Keys.CONTROL + Keys.HOME)
 		wait_event = WebDriverWait(webdriver, waiting_time)
 		search_textfield = wait_event.until(ec.visibility_of_element_located((By.XPATH, search_textfield_xpath)))
 		search_textfield.clear()
