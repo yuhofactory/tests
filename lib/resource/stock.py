@@ -8,7 +8,7 @@ conf = config.get_config()
 stock_log = log.get_logger(logger_name="lib.resource.stock", logging_level=conf.get("LOGGING", "LEVEL"))
 stock_amount_file_path = "{}/input_file/stock_amount.csv".format(os.path.dirname(os.path.realpath(__file__)))
 
-def get_stock_amount():
+def get_stock_amount(product_index_name):
 	if os.path.exists(stock_amount_file_path):
 		try:
 			df_header = pandas.read_csv(stock_amount_file_path, nrows=1)
@@ -17,37 +17,59 @@ def get_stock_amount():
 				names=df_header_list, usecols=df_header_list, skiprows=1, keep_default_na=False)
 			stock_amount_2Dlist = []
 			stock_amount_3Dlist = []
-			product_name = str(df_stock_amount.loc[0, 'shopee_product'])
+			product_name = str(df_stock_amount.loc[0, product_index_name])
 
 			for i in df_stock_amount.index:
-				ommohome_product = str(df_stock_amount.loc[i, 'ommohome_product'])
-				shopee_product = str(df_stock_amount.loc[i, 'shopee_product'])
-				variation_type = str(df_stock_amount.loc[i, 'variation_type'])
-				variation_data = str(df_stock_amount.loc[i, 'variation_data'])
-				previous_amount = str(df_stock_amount.loc[i, 'previous_amount'])
-				current_amount = str(df_stock_amount.loc[i, 'current_amount'])
+				ommohome_product_name = str(df_stock_amount.loc[i, "ommohome_product_name"])
+				ommohome_variation_type = str(df_stock_amount.loc[i, "ommohome_variation_type"])
+				ommohome_variation_data = str(df_stock_amount.loc[i, "ommohome_variation_data"])
+				shopee_product_name = str(df_stock_amount.loc[i, "shopee_product_name"])
+				shopee_variation_type = str(df_stock_amount.loc[i, "shopee_variation_type"])
+				shopee_variation_data = str(df_stock_amount.loc[i, "shopee_variation_data"])
+				previous_amount = str(df_stock_amount.loc[i, "previous_amount"])
+				current_amount = str(df_stock_amount.loc[i, "current_amount"])
 
-				if product_name == shopee_product:
-					stock_amount_2Dlist.append([
-						ommohome_product, 
-						shopee_product, 
-						variation_type, 
-						variation_data, 
-						previous_amount,
-						current_amount
-					])
-				else:
-					stock_amount_3Dlist.append(stock_amount_2Dlist)
-					stock_amount_2Dlist = []
-					stock_amount_2Dlist.append([
-						ommohome_product, 
-						shopee_product, 
-						variation_type, 
-						variation_data, 
-						previous_amount,
-						current_amount
-					])
-					product_name = shopee_product
+				if product_index_name == "shopee_product_name":
+					if product_name == shopee_product_name:
+						stock_amount_2Dlist.append([
+							shopee_product_name, 
+							shopee_variation_type, 
+							shopee_variation_data, 
+							previous_amount,
+							current_amount
+						])
+					else:
+						stock_amount_3Dlist.append(stock_amount_2Dlist)
+						stock_amount_2Dlist = []
+						stock_amount_2Dlist.append([
+							shopee_product_name, 
+							shopee_variation_type, 
+							shopee_variation_data, 
+							previous_amount,
+							current_amount
+						])
+						product_name = shopee_product_name
+
+				elif product_index_name == "ommohome_product_name":
+					if product_name == ommohome_product_name:
+						stock_amount_2Dlist.append([
+							ommohome_product_name, 
+							ommohome_variation_type, 
+							ommohome_variation_data, 
+							previous_amount,
+							current_amount
+						])
+					else:
+						stock_amount_3Dlist.append(stock_amount_2Dlist)
+						stock_amount_2Dlist = []
+						stock_amount_2Dlist.append([
+							ommohome_product_name, 
+							ommohome_variation_type, 
+							ommohome_variation_data, 
+							previous_amount,
+							current_amount
+						])
+						product_name = shopee_product_name
 
 			# Append the last 2D list
 			stock_amount_3Dlist.append(stock_amount_2Dlist)

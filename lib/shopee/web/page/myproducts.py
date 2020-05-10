@@ -45,12 +45,11 @@ stock_amount_textfield_xpath = "//h2[contains(text(), 'Sales Information')]//fol
 update_button_xpath = "//span[contains(text(), 'Update')]//parent::button[contains(@class, 'shopee-button')]"
 successful_product_update_notification_xpath = "//div[@class='shopee-toasts']"
 
-OMMOHOME_PRODUCT_INDEX = 0
-SHOPEE_PRODUCT_INDEX = 1
-VARIATION_TYPE_INDEX = 2
-VARIATION_DATA_INDEX = 3
-PREVIOUS_AMOUNT_INDEX = 4
-CURRENT_AMOUNT_INDEX = 5
+SHOPEE_PRODUCT_NAME_INDEX = 0
+SHOPEE_VARIATION_TYPE_INDEX = 1
+SHOPEE_VARIATION_DATA_INDEX = 2
+PREVIOUS_AMOUNT_INDEX = 3
+CURRENT_AMOUNT_INDEX = 4
 
 #################################################
 #                 Navigations                   #
@@ -120,8 +119,8 @@ def insert_stock_amount(webdriver, stock_amount_2Dlist, waiting_time=30):
 		wait_event = WebDriverWait(webdriver, waiting_time)
 
 		# Retrieve all required web elements (for product with variation)
-		if stock_amount_2Dlist[0][VARIATION_TYPE_INDEX].upper() != "N/A" and \
-			stock_amount_2Dlist[0][VARIATION_DATA_INDEX].upper() != "N/A":
+		if stock_amount_2Dlist[0][SHOPEE_VARIATION_TYPE_INDEX].upper() != "N/A" and \
+			stock_amount_2Dlist[0][SHOPEE_VARIATION_DATA_INDEX].upper() != "N/A":
 			variation_information_label = wait_event.until(ec.visibility_of_element_located(\
 					(By.XPATH, variation_information_label_xpath)))
 			variation_information_label.location_once_scrolled_into_view
@@ -154,7 +153,7 @@ def insert_stock_amount(webdriver, stock_amount_2Dlist, waiting_time=30):
 		# Update stock amount for all variations of the same product
 		for stock_amount in stock_amount_2Dlist:
 			# For product with variation
-			if stock_amount[VARIATION_TYPE_INDEX].upper() != "N/A" and stock_amount[VARIATION_DATA_INDEX].upper() != "N/A":
+			if stock_amount[SHOPEE_VARIATION_TYPE_INDEX].upper() != "N/A" and stock_amount[SHOPEE_VARIATION_DATA_INDEX].upper() != "N/A":
 				stock_row_index = 0
 				node_index = 0
 				
@@ -166,7 +165,7 @@ def insert_stock_amount(webdriver, stock_amount_2Dlist, waiting_time=30):
 
 					# Check for parent node attribute in the first variation column
 					while "table-row" in variation_column_data_parent_attribute:
-						if variation_column_data[node_index].text in stock_amount[VARIATION_DATA_INDEX].split("|"):
+						if variation_column_data[node_index].text in stock_amount[SHOPEE_VARIATION_DATA_INDEX].split("|"):
 							is_product_variation = True
 
 						node_index += 1
@@ -189,7 +188,7 @@ def insert_stock_amount(webdriver, stock_amount_2Dlist, waiting_time=30):
 					# Check for parent node attribute in the second variation column (if any)
 					while "table-cells" in variation_column_data_parent_attribute:
 						# Determine the index of stock amount row for variation with two columns
-						if is_product_variation and variation_column_data[node_index].text in stock_amount[VARIATION_DATA_INDEX].split("|"):
+						if is_product_variation and variation_column_data[node_index].text in stock_amount[SHOPEE_VARIATION_DATA_INDEX].split("|"):
 							is_found_stock_row_index = True
 							break
 
@@ -264,7 +263,7 @@ def update_stock_amount(webdriver, stock_amount_2Dlist, waiting_time=30):
 		click_update_button(webdriver, waiting_time)
 		wait_for_successful_update_notification(webdriver, waiting_time)
 		myproducts_log.info("Successfully updated stock amount for product {}".\
-			format(stock_amount_2Dlist[0][SHOPEE_PRODUCT_INDEX]))
+			format(stock_amount_2Dlist[0][SHOPEE_PRODUCT_NAME_INDEX]))
 
 	except Exception as e:
 		myproducts_log.error(traceback.print_exc())

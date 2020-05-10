@@ -1,35 +1,35 @@
-ommohome_product,shopee_product,variation_type,variation_data,previous_amount,current_amount
-Utensil Canister,Utensil Canister Storage Organizer Bekas Sudu Garfu Spoon Fork Holder,N/A,N/A,0,0
-Pantry Canister Sticker,Pantry Canister Sticker Melayu English Label Pelekat Storage Container,Size,Malay S - 36 words,0,0
-Pantry Canister Sticker,Pantry Canister Sticker Melayu English Label Pelekat Storage Container,Size,Malay M - 30 words,0,0
-Pantry Canister Sticker,Pantry Canister Sticker Melayu English Label Pelekat Storage Container,Size,Malay L - 24 words,0,0
-Pantry Canister Sticker,Pantry Canister Sticker Melayu English Label Pelekat Storage Container,Size,English S - 36 words,0,0
-Pantry Canister Sticker,Pantry Canister Sticker Melayu English Label Pelekat Storage Container,Size,English M - 30 words,0,0
-Pantry Canister Sticker,Pantry Canister Sticker Melayu English Label Pelekat Storage Container,Size,English L - 24 words,0,0
-Hermes Wall Clock,Hermes Wall Clock Jam Dinding Hiasan Cantik,Colour,Black,1,1
-Hermes Wall Clock,Hermes Wall Clock Jam Dinding Hiasan Cantik,Colour,Gold,3,3
-Hermes Wall Clock,Hermes Wall Clock Jam Dinding Hiasan Cantik,Colour,Black + Gold Needle,0,0
-3D Subway Wallpaper,3D Subway Wall Paper Sticker Self Adhesive for Kitchen Living Room,Colour,White,28,28
-3D Subway Wallpaper,3D Subway Wall Paper Sticker Self Adhesive for Kitchen Living Room,Colour,Grey,18,18
-Samaria Gold Cutlery Box Set,Samaria Gold Cutlery Box Set Sudu Garfu Utensils,Colour,White,7,7
-Samaria Gold Cutlery Box Set,Samaria Gold Cutlery Box Set Sudu Garfu Utensils,Colour,Black,0,0
-Banana Traveller Plant,Banana Traveller Artificial Plant Pokok Pisang Palsu Hiasan Viral,Size,120cm,2,2
-Banana Traveller Plant,Banana Traveller Artificial Plant Pokok Pisang Palsu Hiasan Viral,Size,160cm,10,10
-Banana Traveller Plant,Banana Traveller Artificial Plant Pokok Pisang Palsu Hiasan Viral,Size,190cm,5,5
-Skybird Premium Plant,SkyBird Premium Artificial Plant Pokok Hiasan Palsu,Size,110cm,0,0
-Skybird Premium Plant,SkyBird Premium Artificial Plant Pokok Hiasan Palsu,Size,160cm,6,6
-Skybird Premium Plant,SkyBird Premium Artificial Plant Pokok Hiasan Palsu,Size,180cm,6,6
-Civic Knive Holder,Civic Knife Holder Kitchen Utensils Nordic Cutting Board Chopping Holder Pemegang Pisau,Colour,Brown,1,1
-Civic Knive Holder,Civic Knife Holder Kitchen Utensils Nordic Cutting Board Chopping Holder Pemegang Pisau,Colour,White,0,0
-Table Runner,Table Runner Cotton Linen Classic Modern Tea Table Refrigerator Textile Alas Meja,Design|Size,Arrow Grey|30cm x 180cm,2,2
-Table Runner,Table Runner Cotton Linen Classic Modern Tea Table Refrigerator Textile Alas Meja,Design|Size,Arrow Grey|30cm x 200cm,3,3
-Table Runner,Table Runner Cotton Linen Classic Modern Tea Table Refrigerator Textile Alas Meja,Design|Size,Grid Coffee|30cm x 180cm,5,5
-Table Runner,Table Runner Cotton Linen Classic Modern Tea Table Refrigerator Textile Alas Meja,Design|Size,Grid Coffee|30cm x 200cm,6,6
-Table Runner,Table Runner Cotton Linen Classic Modern Tea Table Refrigerator Textile Alas Meja,Design|Size,Grid White|30cm x 180cm,4,4
-Table Runner,Table Runner Cotton Linen Classic Modern Tea Table Refrigerator Textile Alas Meja,Design|Size,Grid White|30cm x 200cm,4,4
-Table Runner,Table Runner Cotton Linen Classic Modern Tea Table Refrigerator Textile Alas Meja,Design|Size,Stripe Black|30cm x 180cm,4,4
-Table Runner,Table Runner Cotton Linen Classic Modern Tea Table Refrigerator Textile Alas Meja,Design|Size,Stripe Black|30cm x 200cm,4,4
-Table Runner,Table Runner Cotton Linen Classic Modern Tea Table Refrigerator Textile Alas Meja,Design|Size,Triangle Grey|30cm x 180cm,6,6
-Table Runner,Table Runner Cotton Linen Classic Modern Tea Table Refrigerator Textile Alas Meja,Design|Size,Triangle Grey|30cm x 200cm,4,4
-Rice Canister 5kg,Rice Canister/Barrel Bekas Beras Tin Container 10kg 5kg,Size|Colour,5kg|White,0,0
-Rice Canister 5kg,Rice Canister/Barrel Bekas Beras Tin Container 10kg 5kg,Size|Colour,5kg|Pink,0,0
+ommohome_product_name,ommohome_variation_type,ommohome_variation_data,shopee_product_name,shopee_variation_type,shopee_variation_data,previous_amount,current_amount
+Utensil Canister,N/A,N/A,Utensil Canister Storage Organizer Bekas Sudu Garfu Spoon Fork Holder,N/A,N/A,0,0
+Pantry Canister Sticker,Set,Malay S - 36 words,Pantry Canister Sticker Melayu English Label Pelekat Storage Container,Size,Malay S - 36 words,0,0
+Pantry Canister Sticker,Set,Malay M - 30 words,Pantry Canister Sticker Melayu English Label Pelekat Storage Container,Size,Malay M - 30 words,0,0
+Pantry Canister Sticker,Set,Malay L - 24 words,Pantry Canister Sticker Melayu English Label Pelekat Storage Container,Size,Malay L - 24 words,0,0
+Pantry Canister Sticker,Set,English S - 36 words,Pantry Canister Sticker Melayu English Label Pelekat Storage Container,Size,English S - 36 words,0,0
+Pantry Canister Sticker,Set,English M - 30 words,Pantry Canister Sticker Melayu English Label Pelekat Storage Container,Size,English M - 30 words,0,0
+Pantry Canister Sticker,Set,English L - 24 words,Pantry Canister Sticker Melayu English Label Pelekat Storage Container,Size,English L - 24 words,0,0
+Hermes Wall Clock,Colour,Black,Hermes Wall Clock Jam Dinding Hiasan Cantik,Colour,Black,1,1
+Hermes Wall Clock,Colour,Gold,Hermes Wall Clock Jam Dinding Hiasan Cantik,Colour,Gold,3,3
+Hermes Wall Clock,Colour,Black + Gold Needle,Hermes Wall Clock Jam Dinding Hiasan Cantik,Colour,Black + Gold Needle,0,0
+3D Subway Wallpaper,Colour,White,3D Subway Wall Paper Sticker Self Adhesive for Kitchen Living Room,Colour,White,28,28
+3D Subway Wallpaper,Colour,Grey,3D Subway Wall Paper Sticker Self Adhesive for Kitchen Living Room,Colour,Grey,18,18
+Samaria Gold Cutlery Box Set,Colour,White,Samaria Gold Cutlery Box Set Sudu Garfu Utensils,Colour,White,7,7
+Samaria Gold Cutlery Box Set,Colour,Black,Samaria Gold Cutlery Box Set Sudu Garfu Utensils,Colour,Black,0,0
+Banana Traveller Plant,Size,120cm,Banana Traveller Artificial Plant Pokok Pisang Palsu Hiasan Viral,Size,120cm,2,2
+Banana Traveller Plant,Size,160cm,Banana Traveller Artificial Plant Pokok Pisang Palsu Hiasan Viral,Size,160cm,10,10
+Banana Traveller Plant,Size,190cm,Banana Traveller Artificial Plant Pokok Pisang Palsu Hiasan Viral,Size,190cm,5,5
+Skybird Premium Plant,Size,110cm,SkyBird Premium Artificial Plant Pokok Hiasan Palsu,Size,110cm,0,0
+Skybird Premium Plant,Size,160cm,SkyBird Premium Artificial Plant Pokok Hiasan Palsu,Size,160cm,6,6
+Skybird Premium Plant,Size,180cm,SkyBird Premium Artificial Plant Pokok Hiasan Palsu,Size,180cm,6,6
+Civic Knive Holder,Colour,Brown,Civic Knife Holder Kitchen Utensils Nordic Cutting Board Chopping Holder Pemegang Pisau,Colour,Brown,1,1
+Civic Knive Holder,Colour,White,Civic Knife Holder Kitchen Utensils Nordic Cutting Board Chopping Holder Pemegang Pisau,Colour,White,0,0
+Table Runner,Design|Size,Arrow Grey|30cm x 180cm,Table Runner Cotton Linen Classic Modern Tea Table Refrigerator Textile Alas Meja,Design|Size,Arrow Grey|30cm x 180cm,2,2
+Table Runner,Design|Size,Arrow Grey|30cm x 200cm,Table Runner Cotton Linen Classic Modern Tea Table Refrigerator Textile Alas Meja,Design|Size,Arrow Grey|30cm x 200cm,3,3
+Table Runner,Design|Size,Grid Coffee|30cm x 180cm,Table Runner Cotton Linen Classic Modern Tea Table Refrigerator Textile Alas Meja,Design|Size,Grid Coffee|30cm x 180cm,5,5
+Table Runner,Design|Size,Grid Coffee|30cm x 200cm,Table Runner Cotton Linen Classic Modern Tea Table Refrigerator Textile Alas Meja,Design|Size,Grid Coffee|30cm x 200cm,6,6
+Table Runner,Design|Size,Grid White|30cm x 180cm,Table Runner Cotton Linen Classic Modern Tea Table Refrigerator Textile Alas Meja,Design|Size,Grid White|30cm x 180cm,4,4
+Table Runner,Design|Size,Grid White|30cm x 200cm,Table Runner Cotton Linen Classic Modern Tea Table Refrigerator Textile Alas Meja,Design|Size,Grid White|30cm x 200cm,4,4
+Table Runner,Design|Size,Stripe Black|30cm x 180cm,Table Runner Cotton Linen Classic Modern Tea Table Refrigerator Textile Alas Meja,Design|Size,Stripe Black|30cm x 180cm,4,4
+Table Runner,Design|Size,Stripe Black|30cm x 200cm,Table Runner Cotton Linen Classic Modern Tea Table Refrigerator Textile Alas Meja,Design|Size,Stripe Black|30cm x 200cm,4,4
+Table Runner,Design|Size,Triangle Grey|30cm x 180cm,Table Runner Cotton Linen Classic Modern Tea Table Refrigerator Textile Alas Meja,Design|Size,Triangle Grey|30cm x 180cm,6,6
+Table Runner,Design|Size,Triangle Grey|30cm x 200cm,Table Runner Cotton Linen Classic Modern Tea Table Refrigerator Textile Alas Meja,Design|Size,Triangle Grey|30cm x 200cm,4,4
+Rice Canister 5kg,Colour,White,Rice Canister/Barrel Bekas Beras Tin Container 10kg 5kg,Size|Colour,5kg|White,0,0
+Rice Canister 5kg,Colour,Pink,Rice Canister/Barrel Bekas Beras Tin Container 10kg 5kg,Size|Colour,5kg|Pink,0,0
