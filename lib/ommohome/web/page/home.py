@@ -79,7 +79,6 @@ def click_product_name(webdriver, product_name, waiting_time=30):
 
 def search_product(webdriver, product_name, waiting_time=30):
 	try:
-		time.sleep(5)
 		insert_product_name(webdriver, product_name, waiting_time)
 		click_product_name(webdriver, product_name, waiting_time)
 		home_log.info("Successfully searched product {}".format(product_name))
