@@ -2,18 +2,23 @@ import traceback
 import log
 import os
 import pandas
+import shutil
 import shopee.config as config
 
 conf = config.get_config()
 stock_log = log.get_logger(logger_name="lib.resource.stock", logging_level=conf.get("LOGGING", "LEVEL"))
-stock_amount_file_path = "{}/input_file/stock_amount.csv".format(os.path.dirname(os.path.realpath(__file__)))
+stock_amount_repo_path = "{}/input_file/stock_amount.csv".format(os.path.dirname(os.path.realpath(__file__)))
+stock_amount_temp_path = "{}/Desktop/stock_amount.csv".format(os.getenv("HOME"))
 
 def get_stock_amount(product_index_name):
-	if os.path.exists(stock_amount_file_path):
+	if os.path.exists(stock_amount_temp_path) == False:
+		shutil.copy2(stock_amount_repo_path, stock_amount_temp_path)
+
+	else:
 		try:
-			df_header = pandas.read_csv(stock_amount_file_path, nrows=1)
+			df_header = pandas.read_csv(stock_amount_temp_path, nrows=1)
 			df_header_list = list(df_header.columns)
-			df_stock_amount = pandas.read_csv(stock_amount_file_path, \
+			df_stock_amount = pandas.read_csv(stock_amount_temp_path, \
 				names=df_header_list, usecols=df_header_list, skiprows=1, keep_default_na=False)
 			stock_amount_2Dlist = []
 			stock_amount_3Dlist = []
@@ -77,7 +82,27 @@ def get_stock_amount(product_index_name):
 
 		except:
 			stock_log.error(traceback.print_exc())
-	else:
-		stock_log.error("Invalid path for stock amount file : {}".format(stock_amount_file_path))
 
 	return stock_amount_3Dlist
+
+def set_stock_amount(stock_amount_list):
+	if os.path.exists(stock_amount_temp_path) == False:
+		shutil.copy2(stock_amount_repo_path, stock_amount_temp_path)
+
+	else:
+		try:
+			df_header = pandas.read_csv(stock_amount_temp_path, nrows=1)
+			df_header_list = list(df_header.columns)
+			df_stock_amount = pandas.read_csv(stock_amount_temp_path, \
+				names=df_header_list, usecols=df_header_list, skiprows=1, keep_default_na=False)
+
+			for i in df_stock_amount.index:
+				df_stock_amount.loc[i, "previous_amount"] = str(df_stock_amount.loc[i, "current_amount"])
+				df_stock_amount.loc[i, "current_amount"] = stock_amount_list[i]
+
+			df_stock_amount.to_csv(stock_amount_temp_path, index=False, encoding='utf8')
+
+		except:
+			stock_log.error(traceback.print_exc())
+	
+	
