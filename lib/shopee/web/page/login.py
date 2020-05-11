@@ -34,7 +34,7 @@ def enter_username(webdriver, wait_event, username):
 
 	except:
 		login_log.error("Failed to enter username")
-		print(traceback.format_exc())
+		login_log.error(traceback.print_exc())
 		return False
 
 def enter_password(webdriver, wait_event, password):
@@ -46,7 +46,7 @@ def enter_password(webdriver, wait_event, password):
 
 	except:
 		login_log.error("Failed to enter password")
-		print(traceback.format_exc())
+		login_log.error(traceback.print_exc())
 		return False
 
 def click_login_button(webdriver, wait_event):
@@ -58,7 +58,7 @@ def click_login_button(webdriver, wait_event):
 
 	except:
 		login_log.error("Failed to click login button")
-		print(traceback.format_exc())
+		login_log.error(traceback.print_exc())
 		return False
 
 def login(webdriver, username, password, waiting_time=30):
