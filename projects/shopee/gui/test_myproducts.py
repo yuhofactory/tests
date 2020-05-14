@@ -33,6 +33,7 @@ class TestMyProducts:
 		myproducts.remove_new_list_view_popup(self.webdriver)
 
 		for i in range(len(stock_amount_3Dlist)):
-			myproducts.search_product(self.webdriver, input=stock_amount_3Dlist[i][0][SHOPEE_PRODUCT_NAME_INDEX])
-			myproducts.update_stock_amount(self.webdriver, stock_amount_3Dlist[i])
-			
+			if len(stock_amount_3Dlist[i]) > 0:
+				myproducts.search_product(self.webdriver, input=stock_amount_3Dlist[i][0][SHOPEE_PRODUCT_NAME_INDEX])
+				myproducts.update_stock_amount(self.webdriver, stock_amount_3Dlist[i])
+				

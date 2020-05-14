@@ -33,6 +33,11 @@ def get_stock_amount(product_index_name):
 			previous_amount = str(df_stock_amount.loc[i, "previous_amount"])
 			current_amount = str(df_stock_amount.loc[i, "current_amount"])
 
+			# Skip shopee's stock amount update for product variations which have the same 
+			# current amount as its previous amount
+			if product_index_name == "shopee_product_name" and current_amount == previous_amount:
+				continue
+
 			if product_index_name == "shopee_product_name":
 				if product_name == shopee_product_name:
 					stock_amount_2Dlist.append([
@@ -76,7 +81,9 @@ def get_stock_amount(product_index_name):
 					product_name = ommohome_product_name
 
 		# Append the last 2D list
-		stock_amount_3Dlist.append(stock_amount_2Dlist)
+		if len(stock_amount_2Dlist) > 0:
+			stock_amount_3Dlist.append(stock_amount_2Dlist)
+		
 		stock_log.info("Successfully retrieved stock amount")
 
 	except:
