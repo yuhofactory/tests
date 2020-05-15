@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
 import pytest
 import ommohome.web.page.login as login
 import ommohome.web.page.home as home
@@ -12,8 +13,16 @@ class TestProduct:
 
 	@pytest.fixture(autouse=True)
 	def setup(self, request):
-		self.webdriver = webdriver.Firefox()
 		conf = config.get_config()
+
+		if conf.get("WEBDRIVER_OPTIONS", "HEADLESS") == "True":
+			options = Options()
+			options.headless = True
+			self.webdriver = webdriver.Firefox(options=options)
+
+		else:
+			self.webdriver = webdriver.Firefox()
+
 		login.login(self.webdriver, username=conf.get("LOGIN", "EMAIL"), \
 			password=conf.get("LOGIN", "PASSWORD"))
 
