@@ -3,7 +3,7 @@ import log
 import os
 import pandas
 import shutil
-import shopee.config as config
+import resource.config as config
 
 conf = config.get_config()
 stock_log = log.get_logger(logger_name="lib.resource.stock", logging_level=conf.get("LOGGING", "LEVEL"))
