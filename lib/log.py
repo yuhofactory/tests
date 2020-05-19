@@ -1,9 +1,12 @@
 import logging
 import sys
+import os
 from logging.handlers import TimedRotatingFileHandler
+import resource.config as config
 
 FORMATTER = logging.Formatter("%(asctime)s [%(name)s][%(levelname)s] %(message)s")
-LOG_FILE = "/tmp/tests.log"
+conf = config.get_config()
+LOG_FILE = os.path.join(conf.get("LOGGING", "LOGFILEPATH"), "tests.log")
 
 def get_console_handler():
 	console_handler = logging.StreamHandler(sys.stdout)
