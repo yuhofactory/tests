@@ -8,7 +8,7 @@ import resource.config as config
 conf = config.get_config()
 stock_log = log.get_logger(logger_name="lib.resource.stock", logging_level=conf.get("LOGGING", "LEVEL"))
 stock_amount_repo_path = "{}/input_file/stock_amount.csv".format(os.path.dirname(os.path.realpath(__file__)))
-stock_amount_temp_path = "{}/Desktop/stock_amount.csv".format(os.getenv("HOME"))
+stock_amount_temp_path = "{}/stock_amount.csv".format(conf.get("INPUT_FILE", "STOCK_AMOUNT_PATH"))
 is_copy_stock_amount_file = False
 
 def get_stock_amount(product_index_name):
