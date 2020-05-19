@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
 import pytest
 import shopee.web.page.login as login
 import shopee.web.page.home as home
@@ -14,8 +15,16 @@ class TestMyProducts:
 
 	@pytest.fixture(autouse=True)
 	def setup(self, request):
-		self.webdriver = webdriver.Firefox()
 		conf = config.get_config()
+
+		if conf.get("WEBDRIVER_OPTIONS", "HEADLESS") == "True":
+			options = Options()
+			options.headless = True
+			self.webdriver = webdriver.Firefox(options=options)
+
+		else:
+			self.webdriver = webdriver.Firefox()
+		
 		login.login(self.webdriver, username=conf.get("LOGIN", "USERNAME"), \
 			password=conf.get("LOGIN", "PASSWORD"))
 
