@@ -26,7 +26,7 @@ username_menu_xpath = "//span[contains(text(), '{}')]//ancestor::li[contains(@cl
 logout_button_xpath = "//a[contains(text(), 'Logout') and ancestor::li[contains(@class, 'logined')]]"
 account_label_xpath = "//h1[contains(text(), 'My Account')]"
 search_textfield_xpath = "//input[@id='search-field-auto']"
-search_dropdown_xpath = "//span[@class='product-title' and contains(text(), '{}')]//parent::a"
+search_dropdown_xpath = "//span[@class='product-title' and text()='{}']//parent::a"
 
 #################################################
 #                 Navigations                   #
