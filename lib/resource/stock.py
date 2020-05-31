@@ -9,17 +9,10 @@ conf = config.get_config()
 stock_log = log.get_logger(logger_name="lib.resource.stock", logging_level=conf.get("LOGGING", "LEVEL"))
 stock_amount_repo_path = "{}/input_file/stock_amount.csv".format(os.path.dirname(os.path.realpath(__file__)))
 stock_amount_temp_path = "{}/stock_amount.csv".format(conf.get("INPUT_FILE", "STOCK_AMOUNT_PATH"))
-is_copy_stock_amount_file = False
 
 def get_stock_amount(product_index_name):
-	global is_copy_stock_amount_file
-
 	if os.path.exists(stock_amount_temp_path) == False:
 		shutil.copy2(stock_amount_repo_path, stock_amount_temp_path)
-		is_copy_stock_amount_file = True
-	
-	else:
-		is_copy_stock_amount_file = False
 
 	try:
 		df_header = pandas.read_csv(stock_amount_temp_path, nrows=1)
@@ -108,15 +101,9 @@ def set_stock_amount(stock_amount_list):
 		df_stock_amount = pandas.read_csv(stock_amount_temp_path, \
 			names=df_header_list, usecols=df_header_list, skiprows=1, keep_default_na=False)
 
-		if is_copy_stock_amount_file:
-			for i in df_stock_amount.index:
-				df_stock_amount.loc[i, "previous_amount"] = stock_amount_list[i]
-				df_stock_amount.loc[i, "current_amount"] = stock_amount_list[i]
-
-		else:
-			for i in df_stock_amount.index:
-				df_stock_amount.loc[i, "previous_amount"] = str(df_stock_amount.loc[i, "current_amount"])
-				df_stock_amount.loc[i, "current_amount"] = stock_amount_list[i]
+		for i in df_stock_amount.index:
+			df_stock_amount.loc[i, "previous_amount"] = str(df_stock_amount.loc[i, "current_amount"])
+			df_stock_amount.loc[i, "current_amount"] = stock_amount_list[i]
 
 		df_stock_amount.to_csv(stock_amount_temp_path, index=False, encoding='utf8')
 
