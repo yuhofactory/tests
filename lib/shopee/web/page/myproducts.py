@@ -44,6 +44,7 @@ stock_amount_textfield_xpath = "//h2[contains(text(), 'Sales Information')]//fol
 	//descendant::span[contains(text(), 'Stock')]]"
 update_button_xpath = "//span[contains(text(), 'Update')]//parent::button[contains(@class, 'shopee-button')]"
 successful_product_update_notification_xpath = "//div[@class='shopee-toasts']"
+product_amount_label_xpath = "//div[@class='page-title' and contains(text(), 'product')]"
 
 SHOPEE_PRODUCT_NAME_INDEX = 0
 SHOPEE_VARIATION_TYPE_INDEX = 1
@@ -107,6 +108,10 @@ def search_product(webdriver, input, type="Product Name", waiting_time=30):
 def click_edit_button(webdriver, waiting_time=30):
 	try:
 		wait_event = WebDriverWait(webdriver, waiting_time)
+		product_amount_label = wait_event.until(ec.visibility_of_element_located(\
+				(By.XPATH, product_amount_label_xpath)))
+		# Scroll down as close as possible to the edit button to ensure its visibility
+		product_amount_label.location_once_scrolled_into_view
 		edit_button = wait_event.until(ec.element_to_be_clickable((By.XPATH, edit_button_xpath)))
 		edit_button.click()
 		myproducts_log.debug("Successfully clicked edit button in product table")
