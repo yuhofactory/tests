@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
+from selenium.webdriver.common.action_chains import ActionChains
 import traceback
 import time
 import log
@@ -45,6 +46,16 @@ stock_amount_textfield_xpath = "//h2[contains(text(), 'Sales Information')]//fol
 update_button_xpath = "//span[contains(text(), 'Update')]//parent::button[contains(@class, 'shopee-button')]"
 successful_product_update_notification_xpath = "//div[@class='shopee-toasts']"
 product_amount_label_xpath = "//div[@class='page-title' and contains(text(), 'product')]"
+expand_product_details_button_xpath = "//span[contains(text(), 'More (')]\
+	//parent::button[contains(@class, 'shopee-button--link')]"
+product_variation_items_xpath = "//div[@class='product-variation-item']"
+sold_out_stock_labels_xpath = "//div[contains(@class, 'product-variation__stock')]\
+	//descendant::div[text()='Sold out']|//descendant::span[text()='Sold out']"
+zero_sales_labels_xpath = "//div[contains(@class, 'product-variation__sales') and text()='0']\
+	|//div[contains(@class, 'product-variation__sales')]//descendant::div[text()='0']"
+delisted_product_status_label_xpath = "//div[contains(@class, 'product-name')]/div[contains(text(), 'Delisted')]"
+publish_button_xpath = "//span[contains(text(), 'Publish')]//parent::button"
+delist_button_xpath = "//span[contains(text(), 'Delist')]//parent::button"
 
 SHOPEE_PRODUCT_NAME_INDEX = 0
 SHOPEE_VARIATION_TYPE_INDEX = 1
@@ -77,7 +88,8 @@ def remove_new_list_view_popup(webdriver, waiting_time=30):
 def insert_product_filter_input(webdriver, input, waiting_time=30):
 	try:
 		wait_event = WebDriverWait(webdriver, waiting_time)
-		input_filter_textfield = wait_event.until(ec.visibility_of_element_located((By.XPATH, input_filter_textfield_xpath)))
+		input_filter_textfield = wait_event.until(ec.visibility_of_element_located(\
+			(By.XPATH, input_filter_textfield_xpath)))
 		input_filter_textfield.clear()
 		input_filter_textfield.send_keys(input)
 		myproducts_log.debug("Successfully inserted product filter input")
@@ -108,10 +120,6 @@ def search_product(webdriver, input, type="Product Name", waiting_time=30):
 def click_edit_button(webdriver, waiting_time=30):
 	try:
 		wait_event = WebDriverWait(webdriver, waiting_time)
-		product_amount_label = wait_event.until(ec.visibility_of_element_located(\
-				(By.XPATH, product_amount_label_xpath)))
-		# Scroll down as close as possible to the edit button to ensure its visibility
-		product_amount_label.location_once_scrolled_into_view
 		edit_button = wait_event.until(ec.element_to_be_clickable((By.XPATH, edit_button_xpath)))
 		edit_button.click()
 		myproducts_log.debug("Successfully clicked edit button in product table")
@@ -263,6 +271,7 @@ def wait_for_successful_update_notification(webdriver, waiting_time=30):
 def update_stock_amount(webdriver, stock_amount_2Dlist, waiting_time=30):
 	try:
 		time.sleep(3)
+		scroll_to_product_details(webdriver)
 		click_edit_button(webdriver, waiting_time)
 		insert_stock_amount(webdriver, stock_amount_2Dlist, waiting_time)
 		click_update_button(webdriver, waiting_time)
@@ -272,3 +281,163 @@ def update_stock_amount(webdriver, stock_amount_2Dlist, waiting_time=30):
 
 	except Exception as e:
 		myproducts_log.error(traceback.print_exc())
+
+def scroll_to_product_details(webdriver, waiting_time=30):
+	try:
+		wait_event = WebDriverWait(webdriver, waiting_time)
+		product_amount_label = wait_event.until(ec.visibility_of_element_located(\
+				(By.XPATH, product_amount_label_xpath)))
+		# Scroll down as close as possible to the edit button to ensure its visibility
+		product_amount_label.location_once_scrolled_into_view
+		myproducts_log.debug("Successfully scrolled to product details")
+
+	except Exception as e:
+		myproducts_log.error(traceback.print_exc())
+
+def expand_product_details(webdriver, waiting_time=30):
+	try:
+		wait_event = WebDriverWait(webdriver, waiting_time)
+		expand_product_details_button = wait_event.until(ec.element_to_be_clickable(\
+			(By.XPATH, expand_product_details_button_xpath)))
+		expand_product_details_button.click()
+		myproducts_log.debug("Successfully expanded product details")
+
+	except Exception as e:
+		myproducts_log.warning("No need to expand product details")
+
+def get_product_variation_items_amount(webdriver, waiting_time=30):
+	try:
+		wait_event = WebDriverWait(webdriver, waiting_time)
+		product_variation_items_amount = None
+		product_variation_items = wait_event.until(ec.visibility_of_all_elements_located(\
+			(By.XPATH, product_variation_items_xpath)))
+		product_variation_items_amount = len(product_variation_items)
+		myproducts_log.debug("Successfully retrieved product variation items amount")
+
+	except Exception as e:
+		product_variation_items_amount = 1
+		myproducts_log.warning("Selected product does not have variation")
+		myproducts_log.warning(traceback.print_exc())
+
+	return product_variation_items_amount
+
+def get_sold_out_stock_amount(webdriver, waiting_time=30):
+	try:
+		wait_event = WebDriverWait(webdriver, waiting_time)
+		sold_out_stock_amount = None
+		sold_out_stock_labels = wait_event.until(ec.visibility_of_all_elements_located(\
+			(By.XPATH, sold_out_stock_labels_xpath)))
+		sold_out_stock_amount = len(sold_out_stock_amount_labels)
+		myproducts_log.debug("Successfully retrieved sold out stock amount")
+
+	except Exception as e:
+		sold_out_stock_amount = 0
+		myproducts_log.warning("Product variations have not sold out yet")
+		myproducts_log.warning(traceback.print_exc())
+
+	return sold_out_stock_amount
+
+def get_zero_sales_amount(webdriver, waiting_time=30):
+	try:
+		wait_event = WebDriverWait(webdriver, waiting_time)
+		zero_sales_amount = None
+		zero_sales_labels = wait_event.until(ec.visibility_of_all_elements_located(\
+			(By.XPATH, zero_sales_labels_xpath)))
+		zero_sales_amount = len(zero_sales_amount_labels)
+		myproducts_log.debug("Successfully retrieved zero sales amount")
+
+	except Exception as e:
+		zero_sales_amount = 0
+		myproducts_log.warning("Product variations have sales records")
+		myproducts_log.warning(traceback.print_exc())
+
+	return zero_sales_amount
+
+def get_delisted_product_status(webdriver, waiting_time=30):
+	try:
+		wait_event = WebDriverWait(webdriver, waiting_time)
+		delisted_product_status = True
+		delisted_product_status_label = wait_event.until(ec.visibility_of_element_located(\
+			(By.XPATH, delisted_product_status_label_xpath)))
+		myproducts_log.debug("Successfully retrieved delisted product status")
+
+	except Exception as e:
+		delisted_product_status = False
+		myproducts_log.warning("The product is not being delisted")
+
+	return delisted_product_status
+
+def click_publish_button(webdriver, waiting_time=30):
+	try:
+		wait_event = WebDriverWait(webdriver, waiting_time)
+		publish_button = wait_event.until(ec.element_to_be_clickable((By.XPATH, publish_button_xpath)))
+		publish_button.click()
+		myproducts_log.debug("Successfully clicked publish button in product details page")
+
+	except Exception as e:
+		myproducts_log.error(traceback.print_exc())
+
+def click_delist_button(webdriver, waiting_time=30):
+	try:
+		wait_event = WebDriverWait(webdriver, waiting_time)
+		delist_button = wait_event.until(ec.element_to_be_clickable((By.XPATH, delist_button_xpath)))
+		delist_button.click()
+		myproducts_log.debug("Successfully clicked delist button in product details page")
+
+	except Exception as e:
+		myproducts_log.error(traceback.print_exc())
+
+def publish_delist_product(webdriver, waiting_time=30):
+	try:
+		scroll_to_product_details(webdriver, waiting_time=10)
+		expand_product_details(webdriver, waiting_time=5)
+		product_variation_items_amount = get_product_variation_items_amount(webdriver, waiting_time)
+		sold_out_stock_amount = get_sold_out_stock_amount(webdriver, waiting_time)
+		zero_sales_amount = get_zero_sales_amount(webdriver, waiting_time)
+		delisted_product_status = get_delisted_product_status(webdriver, waiting_time)
+		publish_delist_product_status = get_publish_delist_product_status(product_variation_items_amount, \
+			sold_out_stock_amount, zero_sales_amount, delisted_product_status)
+
+		if publish_delist_product_status is not None:
+			click_edit_button(webdriver)
+
+			if publish_delist_product_status == "publish":
+				click_publish_button(webdriver)
+
+			elif publish_delist_product_status == "delist":
+				click_delist_button(webdriver)
+
+			wait_for_successful_update_notification(webdriver)
+			myproducts_log.info("Successfully {}ed the selected product".format(publish_delist_product_status))
+
+		else:
+			myproducts_log.info("No publish/delist process is required for the selected product")
+
+	except Exception as e:
+		myproducts_log.error(traceback.print_exc())
+
+#################################################
+#                  Operations                   #
+#################################################
+def get_publish_delist_product_status(product_variation_items_amount, sold_out_stock_amount, \
+	zero_sales_amount, delisted_product_status):
+	publish_delist_product_status = None
+
+	# Delist product if all variations of the product are sold out and have no sales records
+	if sold_out_stock_amount == product_variation_items_amount and \
+		zero_sales_amount == product_variation_items_amount:
+
+		# Delist product if it's currently being published
+		if delisted_product_status == False:
+			publish_delist_product_status = "delist"
+		else:
+			publish_delist_product_status = None
+
+	else:
+		# Publish product if it's currently being delisted
+		if delisted_product_status:
+			publish_delist_product_status = "publish"
+		else:
+			publish_delist_product_status = None
+
+	return publish_delist_product_status

@@ -46,3 +46,14 @@ class TestMyProducts:
 				myproducts.search_product(self.webdriver, input=stock_amount_3Dlist[i][0][SHOPEE_PRODUCT_NAME_INDEX])
 				myproducts.update_stock_amount(self.webdriver, stock_amount_3Dlist[i])
 				
+	def test_publish_delist_product(self):
+		SHOPEE_PRODUCT_NAME_INDEX = 0
+
+		stock_amount_3Dlist = stock.get_stock_amount(product_index_name="shopee_product_name")
+		nav.navigate(self.webdriver, "myproducts", use_url=True)
+		myproducts.remove_new_list_view_popup(self.webdriver)
+		
+		for i in range(len(stock_amount_3Dlist)):
+			if len(stock_amount_3Dlist[i]) > 0:
+				myproducts.search_product(self.webdriver, input=stock_amount_3Dlist[i][0][SHOPEE_PRODUCT_NAME_INDEX])
+				myproducts.publish_delist_product(self.webdriver)
