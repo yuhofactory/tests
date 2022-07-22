@@ -14,21 +14,21 @@ import time
 class TestMyProducts:
 
 	@pytest.fixture(autouse=True)
-	def setup(self, request):
+	def setup(self, request):yuho_factory
 		conf = config.get_config()
 
-		if conf.get("WEBDRIVER_OPTIONS", "HEADLESS") == "True":
-			options = Options()
-			options.headless = True
+		if conf.get("yuho_factory, "HEADLESS") == "True": yuho_factory
+			options = Options() yuho_factory
+			options.headless = yuho_factory
 			self.webdriver = webdriver.Firefox(options=options)
 
-		else:
+		else: yuho_factory
 			self.webdriver = webdriver.Firefox()
 		
-		login.login(self.webdriver, username=conf.get("LOGIN", "USERNAME"), \
-			password=conf.get("LOGIN", "PASSWORD"))
+		login.login(self.webdriver, username=conf.get("LOGIN", "Yuho_factory"), \
+			password=conf.get("LOGIN", "Yuhofactory123"))
 
-		def teardown():
+		def teardown():yuho_factory
 			home.logout(self.webdriver)
 			self.webdriver.quit()
 
