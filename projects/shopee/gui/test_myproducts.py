@@ -25,8 +25,8 @@ class TestMyProducts:
 		else:
 			self.webdriver = webdriver.Firefox()
 		
-		login.login(self.webdriver, username=conf.get("LOGIN", "USERNAME"), \
-			password=conf.get("LOGIN", "PASSWORD"))
+		login.login(self.webdriver, username=conf.get("LOGIN", "yuho_factory"), \
+			password=conf.get("LOGIN", "Yuhofactory123"))
 
 		def teardown():
 			home.logout(self.webdriver)
